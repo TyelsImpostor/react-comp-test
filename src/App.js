@@ -1,28 +1,34 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import './style.css';
-import ButtonCount from './buttonCount';
-import ShowUsers from './ShowUsers';
-
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Pacientes from './Components/Pacientes';
+import NuevoPaciente from './Components/NuevoPaciente';
+import clienteAxios from './config/axios';
 export default function App() {
-  const [count, setCount] = useState(0);
-  const [users, setUsers] = useState([]);
+  const [tutorial, guardarTutorial] = useState([]);
 
   useEffect(() => {
-    const componentDidMount = () => {
-      fetch('https://spring-boot-back.herokuapp.com/api/users/all')
-        .then(response => response.json())
-        .then(data => setUsers(data));
+    //const componentDidMount = () => {
+    //    consultarAPI = () => {
+
+    const consultarAPI = () => {
+      clienteAxios
+        .getAll('/tutorials')
+        .then(response => {
+          console.log(response);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     };
-    componentDidMount();
+    consultarAPI();
   }, []);
 
   return (
-    <Fragment>
-      <div>
-        <ButtonCount count={count} setCount={setCount} />
-        <br />
-        <ShowUsers users={users} />
-      </div>
-    </Fragment>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Pacientes} />
+        <Route exact path="/nueva" component={NuevoPaciente} />
+      </Switch>
+    </Router>
   );
 }
