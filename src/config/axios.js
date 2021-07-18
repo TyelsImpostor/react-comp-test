@@ -1,5 +1,7 @@
 import axios from 'axios';
 
-export default clienteAxios => {
-  axios.create({ baseURL: process.env.REACT_APP_BACKEND_URL });
-};
+const clienteAxios = axios.create({
+  baseURL: 'https://spring-boot-back.herokuapp.com/api'
+});
+
+export default clienteAxios;
